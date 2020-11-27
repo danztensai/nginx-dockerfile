@@ -32,7 +32,8 @@ pipeline {
                             myapp.push("${env.BUILD_ID}")
                     }
                 }
-            
+        }
+		}
         stage('Deploy to GKE') {
             steps{
                 sh "sed -i 's/danztensai123/nginx-test-latihan:latest/nginx-test-latihan:${env.BUILD_ID}/g' deployment.yaml"

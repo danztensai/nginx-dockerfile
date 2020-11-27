@@ -14,7 +14,7 @@ pipeline {
         }
         stage('Deploy to GKE') {
             steps{
-                sh "sed -i 's/php_simple_curd:latest/php_simple_curd:${env.BUILD_ID}/g' deployment.yaml"
+                sh "sed -i 's/danztensai123/nginx-test-latihan/nginx-test-latihan:${env.BUILD_ID}/g' deployment.yaml"
                 step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, location: env.LOCATION, manifestPattern: 'deployment.yaml', credentialsId: env.CREDENTIALS_ID, verifyDeployments: true])
             }
         }

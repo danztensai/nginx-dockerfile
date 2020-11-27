@@ -1,9 +1,4 @@
 pipeline {
-/* this
-   is a
-   multi-line comment */
-
-// this is a single line comment
     agent any
     environment {
         PROJECT_ID = 'translate-cizen-1549780978207'
@@ -17,26 +12,9 @@ pipeline {
                 checkout scm
             }
         }
-		stage("Build image") {
-            steps {
-                script {
-                    myapp = docker.build("danztensai123/nginx-test-latihan:${env.BUILD_ID}")
-                }
-            }
-        }
-        stage("Push image") {
-            steps {
-                script {
-                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
-                            myapp.push("latest")
-                            myapp.push("${env.BUILD_ID}")
-                    }
-                }
-        }
-		}
         stage('Deploy to GKE') {
             steps{
-                sh "sed -i 's/danztensai123/nginx-test-latihan:latest/nginx-test-latihan:${env.BUILD_ID}/g' deployment.yaml"
+                sh "sed -i 's/php_simple_curd:latest/php_simple_curd:${env.BUILD_ID}/g' deployment.yaml"
                 step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, location: env.LOCATION, manifestPattern: 'deployment.yaml', credentialsId: env.CREDENTIALS_ID, verifyDeployments: true])
             }
         }
